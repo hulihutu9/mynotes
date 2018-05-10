@@ -1,13 +1,7 @@
 const Base = require('./base.js');
 
 module.exports = class extends Base {
-  indexAction() {
-    return this.display();
-  }
-
-  // 登录
-  loginAction() {
-    
+  async indexAction() {
     return this.display();
   }
 };
