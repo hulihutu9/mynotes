@@ -1,13 +1,7 @@
 <html>
-  <form method="POST" action='/'>
-    <label>用户名：</label>
-    <input type='text' name='name'>
-    <br>
-    <label>密码：</label>
-    <input type='password' name='password'>
-    <br>
-    <input type='submit' value='登录'> 
-    <br>
-    <h5>{{ error }}</h5>
-  </form>
+  <ul>
+    <li><a href='/category/index' target='menuframe'>类别</a></li>
+  </ul>
+  <a href="/index/logout">注销</a>
+  <iframe name='menuframe' src='/index/welcome' style="overflow:visible;" scrolling="yes" frameborder="no" height="100%"  width="100%"></iframe>
 </html>
