@@ -2,11 +2,14 @@ const Base = require('./base.js');
 
 module.exports = class extends Base {
   async indexAction() {
-    let category = await this.model('category').select();
-    this.assign('data', category);
     return this.display();
   }
 
+  async listAction() {
+    let category = await this.model('category').select();
+    return this.json({'category': category});
+  }
+  
   async deleteAction() {
     if (this.isPost) {
       let id = this.post('id')
