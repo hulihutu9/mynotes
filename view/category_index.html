@@ -15,7 +15,7 @@
         </el-table-column>
       </el-table>
       <div style="margin-top: 20px">
-        <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
+        <el-button @click="deleteRow()">删除</el-button>
         <el-button @click="setCurrent()">取消选择</el-button>
       </div>
     </template>
@@ -41,8 +41,24 @@
       },
       
       methods: {
-        setCurrent(row) {
-          this.$refs.singleTable.setCurrentRow(row);
+        deleteRow() {
+          if (this.currentRow === null) {
+            this.$message('请选择一行');
+          } else {
+            let url = 'delete';
+            let that = this;
+            axios.post(url, {'id':this.currentRow.id}).then(function (res) {
+              if (res.data.success) {
+                that.$message('删除成功');
+              } else {
+                that.$message('删除失败');
+              }
+            }).
+            catch(function (error) {
+              console.log(error);
+            })
+            window.location.reload();
+          }
         },
 
         handleCurrentChange(val) {

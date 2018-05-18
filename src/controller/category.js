@@ -6,17 +6,25 @@ module.exports = class extends Base {
   }
 
   async listAction() {
-    let category = await this.model('category').select();
-    return this.json({'category': category});
+    const category = await this.model('category').select();
+    return this.json({ 'category': category });
   }
-  
+
+  async addAction() {
+    return this.display();
+  }
+
   async deleteAction() {
     if (this.isPost) {
-      let id = this.post('id')
-      let categoryModel = this.model('category');
-      let deleteNum = categoryModel.where({'id': id}).delete();
-      let result = deleteNum ? true : false;
-      return this.json({'success': result});
-    }    
+      const id = this.post('id');
+      const categoryModel = this.model('category');
+
+      const deleteNum = categoryModel.where({ 'id': id }).delete();
+      if (deleteNum) {
+        return this.json({ 'success': true });
+      } else {
+        return this.json({ 'success': false });
+      }
+    }
   }
 };
