@@ -6,30 +6,79 @@
 <body>  
   <script src="//unpkg.com/vue/dist/vue.js"></script>
   <script src="//unpkg.com/element-ui@2.3.8/lib/index.js"></script>
-  <el-form ref="form" :model="form" label-width="80px">
-    <el-form-item label="类比名称">
-      <el-input v-model="form.name"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">创建</el-button>
-      <el-button>取消</el-button>
-    </el-form-item>
-  </el-form>
+  <div id="app">
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item label="类别名称">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">保存</el-button>
+        <el-button @click="onCancel">取消</el-button>
+      </el-form-item>
+    </el-form>
+</div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-    export default {
-      data() {
-        return {
-          form: {
+    function getQueryVariable(variable)
+    {
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+    }
+    id = getQueryVariable('id');
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        form: {
             name: '',
-          }
-        }
+            id: '',
+          },
       },
+
+      created: function () {
+        if (id) {
+          let url = 'edit';
+          let that = this;
+          axios.post(url, {'id': id}).then(function (res) {
+            that.form.name = res.data.category.name;
+            that.form.id = res.data.category.id;
+          }).
+          catch(function (error) {
+            console.log(error);
+          })
+        }       
+      },
+
       methods: {
         onSubmit() {
-          console.log('submit!');
+          if (!this.form.name) {
+            this.$message('请输入类别名称');
+          } else {
+            let url = 'save';
+            let that = this;
+            axios.post(url, this.form).then(function (res) {
+              if (res.data.success) {
+                location.assign('index');
+              } else {
+                that.$message('保存失败');
+              }
+            }).
+            catch(function (error) {
+              console.log(error);
+            })
+          }
+        },
+
+        onCancel() {
+          location.assign('index');
         }
       }
-    }
+    });
   </script>
 </body>
 </html>

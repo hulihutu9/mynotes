@@ -15,8 +15,9 @@
         </el-table-column>
       </el-table>
       <div style="margin-top: 20px">
+        <el-button @click="addRow()">新增</el-button>
+        <el-button @click="editRow()">编辑</el-button>
         <el-button @click="deleteRow()">删除</el-button>
-        <el-button @click="setCurrent()">取消选择</el-button>
       </div>
     </template>
   </div>
@@ -41,6 +42,19 @@
       },
       
       methods: {
+        addRow() {
+          location.assign("add");
+        },
+        
+        editRow() {
+          if (this.currentRow === null) {
+            this.$message('请选择一行');
+          } else {
+            location.assign("add?id=" + this.currentRow.id);
+
+          }
+        },
+
         deleteRow() {
           if (this.currentRow === null) {
             this.$message('请选择一行');
@@ -57,7 +71,7 @@
             catch(function (error) {
               console.log(error);
             })
-            window.location.reload();
+            location.reload();
           }
         },
 
